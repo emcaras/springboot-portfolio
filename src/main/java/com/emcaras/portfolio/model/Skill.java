@@ -18,6 +18,5 @@ public class Skill {
     private Integer levelPercentage;
     @NotBlank(message = "El icono no puede estar vacio")
     private String iconClass;
-    @NotBlank
     private Long personalInfoId;
 }
