@@ -6,6 +6,11 @@ import org.springframework.stereotype.Component;
 @Component
 public class ProjectMapper {
     public ProjectDto toDto(Project project){
+
+        if(project == null){
+            return null;
+        }
+
         ProjectDto projectDto = new ProjectDto();
         projectDto.setId(project.getId());
         projectDto.setTitle(project.getTitle());
@@ -17,6 +22,9 @@ public class ProjectMapper {
     }
 
     public Project toEntity(ProjectDto projectDto){
+        if(projectDto == null){
+            return null;
+        }
         Project project = new Project();
 
         project.setId(projectDto.getId());
@@ -25,7 +33,6 @@ public class ProjectMapper {
         project.setImageUrl(projectDto.getImageUrl());
         project.setProjectUrl(projectDto.getProjectUrl());
         project.setPersonalInfoId(projectDto.getPersonalInfoId());
-
         return project;
     }
 }

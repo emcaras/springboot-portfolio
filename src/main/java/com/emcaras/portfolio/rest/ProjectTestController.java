@@ -3,15 +3,20 @@ package com.emcaras.portfolio.rest;
 import com.emcaras.portfolio.dto.ProjectDto;
 import com.emcaras.portfolio.dto.ProjectMapper;
 import com.emcaras.portfolio.model.Project;
+import com.emcaras.portfolio.service.FileStorageService;
 import com.emcaras.portfolio.service.IProjectService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/test/project")
@@ -19,6 +24,7 @@ import java.util.List;
 public class ProjectTestController {
     private final IProjectService projectService;
     private final ProjectMapper projectMapper;
+    private final FileStorageService fileStorageService;
 
     @GetMapping
     public ResponseEntity<List<ProjectDto>> findAll(){
@@ -26,8 +32,10 @@ public class ProjectTestController {
                 .map(projectMapper::toDto).toList(), HttpStatus.OK);
     }
 
-    @PostMapping
-    public ResponseEntity<ProjectDto> save(@Valid @RequestBody ProjectDto projectDto){
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<ProjectDto> save(@Valid @ModelAttribute ProjectDto projectDto, @RequestParam MultipartFile file) throws IOException {
+        String url = fileStorageService.storeFileCloudinary(file);
+        projectDto.setImageUrl(url);
         Project project = this.projectService.save(projectMapper.toEntity(projectDto));
         return new ResponseEntity<>(projectMapper.toDto(project), HttpStatus.CREATED);
     }

@@ -13,19 +13,10 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class Education {
     private Long id;
-    @NotBlank(message = "El grado no debe ir vacio")
     private String degree;
-    @NotBlank(message = "La institucion no puede ir vacia")
     private String institution;
-    @NotNull(message = "El dia de inicio no puede ser nulo")
-    @PastOrPresent(message = "El dia de inicio no puede ser en el futuro")
     private LocalDate startDate;
-    @NotNull(message = "El dia de fin no puede ser nulo")
-    @PastOrPresent(message = "El dia de fin no puede ser en el futuro")
     private LocalDate endDate;
-    @NotBlank(message = "La descripcion no puede ir vacia")
     private String description;
-
-    //La validacion de la clave foranea se realiza a nivel de servicio
     private Long personalInfoId;
 }
